@@ -1,0 +1,122 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Manage Agents — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / AGENT DATABASE
+            </p>
+            <h1>
+                👥 Manage Agents
+            </h1>
+            <p>
+                View all registered agents and their progress.
+            </p>
+        </div>
+
+        <div class="online-status">
+            <span></span>
+            SYSTEM ONLINE
+        </div>
+    </div>
+
+    <div class="agents-card">
+        <div class="agents-header">
+            <div>
+                <span>
+                    REGISTERED OPERATIVES
+                </span>
+                <h2>
+                    Agent Directory
+                </h2>
+            </div>
+            <div class="agent-count">
+                {{ agents|length }} Agents
+            </div>
+        </div>
+
+        {% if agents %}
+        <div class="agents-table-wrapper">
+            <table class="agents-table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Email</th>
+                        <th>Level</th>
+                        <th>XP</th>
+                        <th>Rank</th>
+                        <th>Missions</th>
+                        <th>Badges</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for agent in agents %}
+                    <tr>
+                        <td>
+                            <div class="agent-name">
+                                <div class="agent-avatar">
+                                    🕵️
+                                </div>
+                                <div>
+                                    <strong>
+                                        {{ agent.username }}
+                                    </strong>
+                                    <small>
+                                        Agent #{{ agent.id }}
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ agent.email }}
+                        </td>
+                        <td>
+                            <span class="level-badge">
+                                LVL {{ agent.level }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>
+                                {{ agent.xp }} XP
+                            </strong>
+                        </td>
+                        <td>
+                            {{ agent.rank }}
+                        </td>
+                        <td>
+                            {{ agent.missions_completed }}
+                        </td>
+                        <td>
+                            🏆 {{ agent.badges }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+
+        <div class="empty-activity">
+            <div>
+                👥
+            </div>
+            <h3>
+                No Agents Registered
+            </h3>
+            <p>
+                Registered agents will appear here.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

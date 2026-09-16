@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% block title %}
+Admin Control Center
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <div class="admin-logo-icon">
+                ⚡
+            </div>
+
+            <div>
+                <h2>
+                    CIPHER
+                </h2>
+
+                <span>
+                    ADMIN
+                </span>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin.dashboard') }}"
+                class="active">
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_missions')}}">
+                🗺️
+                <span>Missions</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_puzzles')}}">
+                🧩
+                <span>Puzzles</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_agents')}}">
+                👥
+                <span>Agents</span>
+            </a>
+
+            <a href="{{ url_for('admin.leaderboard')}}">
+                🏆
+                <span>Leaderboard</span>
+            </a>
+
+            <a href="{{ url_for('admin.analytics')}}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('admin.settings')}}">
+                ⚙️
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-bottom">
+            <a href="{{ url_for('auth.logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div>
+                <p class="admin-eyebrow">
+                    PROJECT CIPHER / CONTROL CENTER
+                </p>
+                <h1>
+                    Welcome, Administrator
+                </h1>
+                <p class="admin-subtitle">
+                    Manage missions, puzzles and agents
+                    from one place.
+                </p>
+            </div>
+
+            <div class="admin-profile">
+                <div class="admin-avatar">
+                    🕵️
+                </div>
+                <div>
+                    <strong>
+                        {{ current_user.username }}
+                    </strong>
+                    <span>
+                        Administrator
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="admin-stats">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">
+                    🗺️
+                </div>
+                <div>
+                    <span>
+                        TOTAL MISSIONS
+                    </span>
+                    <h2>
+                        {{ total_missions }}
+                    </h2>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">
+                    🧩
+                </div>
+                <div>
+                    <span>
+                        TOTAL PUZZLES
+                    </span>
+                    <h2>
+                        {{ total_puzzles }}
+                    </h2>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">
+                    👥
+                </div>
+                <div>
+                    <span>
+                        TOTAL AGENTS
+                    </span>
+                    <h2>
+                        {{ total_agents }}
+                    </h2>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">
+                    🏆
+                </div>
+                <div>
+                    <span>
+                        COMPLETED MISSIONS
+                    </span>
+                    <h2>
+                        {{ completed_missions }}
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <span>
+                        CONTROL
+                    </span>
+                    <h2>
+                        Quick Actions
+                    </h2>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <a href="{{ url_for('admin.add_mission')}}"
+                    class="quick-action">
+                    <div class="quick-icon">
+                        🗺️
+                    </div>
+                    <div>
+                        <h3>
+                            Add Mission
+                        </h3>
+                        <p>
+                            Create a new investigation
+                        </p>
+                    </div>
+                    <strong>
+                        →
+                    </strong>
+                </a>
+
+                <a href="{{ url_for('admin.add_puzzle')}}"
+                    class="quick-action">
+                    <div class="quick-icon">
+                        🧩
+                    </div>
+                    <div>
+                        <h3>
+                            Add Puzzle
+                        </h3>
+                        <p>
+                            Create a new challenge
+                        </p>
+                    </div>
+                    <strong>
+                        →
+                    </strong>
+                </a>
+
+                <a href="{{url_for('admin.manage_agents')}}"
+                    class="quick-action">
+                    <div class="quick-icon">
+                        👥
+                    </div>
+                    <div>
+                        <h3>
+                            Manage Agents
+                        </h3>
+                        <p>
+                            View registered agents
+                        </p>
+                    </div>
+                    <strong>
+                        →
+                    </strong>
+                </a>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <span>
+                        SYSTEM
+                    </span>
+                    <h2>
+                        Recent Activity
+                    </h2>
+                </div>
+                <div class="online-status">
+                    <span></span>
+                    SYSTEM ONLINE
+                </div>
+            </div>
+
+            <div class="activity-panel">
+                {% if recent_completions %}
+                    {% for completion in recent_completions %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            🏆
+                        </div>
+                        <div class="activity-info">
+                            <h3>Mission Completed</h3>
+                            <p>
+                                Agent ID {{ completion.user_id }}
+                                Completed Mission {{ completion.mission_id }}
+                            </p>
+                        </div>
+
+                        <div class="activity-xp">
+                            +{{ completion.xp_earned }} XP
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="empty-activity">
+                    <div>
+                        📡
+                    </div>
+                    <h3>
+                        No Recent Activity
+                    </h3>
+                    <p>
+                        Agent activity will appear here.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="admin-section recent-missions-section">
+            <div class="section-heading">
+                <div>
+                    <span>DATABASE</span>
+                    <h2>Recent Missions</h2>
+                </div>
+                <a href="{{ url_for('admin.manage_missions') }}"
+                    class="view-all-btn">
+                        View All →
+                </a>
+            </div>
+                
+            {% if recent_missions %}
+                <div class="recent-missions-list">
+                    {% for mission in recent_missions %}
+                        <div class="recent-mission-card">
+                            <div class="recent-mission-left">
+                                <div class="recent-mission-icon">
+                                    {% if mission.id == 1 %}
+                                        🧪
+                                    {% elif mission.id == 2 %}
+                                        💻
+                                    {% elif mission.id == 3 %}
+                                        🕵️
+                                    {% else %}
+                                        🎯
+                                    {% endif %}
+                                </div>
+                                 
+                                <div class="recent-mission-info">
+                                    <div class="mission-id">
+                                        MISSION {{ "%02d"|format(mission.id) }}
+                                    </div>
+                                    <h3>{{ mission.title }}</h3>
+                                    <p>{{ mission.description }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="recent-mission-right">
+                                <span class="difficulty-badge">
+                                    {{ mission.difficulty }}
+                                </span>
+                                <div class="mission-reward">
+                                    <span>REWARD</span>
+                                    <strong>
+                                        ⭐ {{ mission.reward_xp }} XP
+                                    </strong>
+                                </div>
+                                
+                                <a href="{{ url_for('admin.edit_mission',mission_id=mission.id) }}"
+                                    class="mission-edit-btn">
+                                        ✏️
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+
+            <div class="mission-empty">
+                <div class="empty-icon">
+                    🗺️
+                </div>
+                <h3>No Missions Added Yet</h3>
+                <p>Create your first investigation to see it here.</p>
+                <a href="{{ url_for('admin.add_mission') }}"
+                    class="empty-action-btn">
+                        + Create Mission
+                </a>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+</div>
+
+{% endblock %}

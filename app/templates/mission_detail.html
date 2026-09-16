@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% block title %}
+{{ mission.title }} — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mission_detail.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="mission-detail-page">
+    <div class="mission-breadcrumb">
+        <span>PROJECT CIPHER</span>
+        <i>›</i>
+        <span>MISSION CENTER</span>
+        <i>›</i>
+        <strong>MISSION {{ "%02d"|format(mission.id) }}</strong>
+    </div>
+
+    <section class="mission-hero">
+        <div class="hero-glow"></div>
+        <div class="mission-hero-content">
+            <div class="mission-code">
+                <span class="pulse-dot"></span>
+                CLASSIFIED INVESTIGATION
+            </div>
+            <h1>
+                {{ mission.title }}
+            </h1>
+            <p class="hero-description">
+                {{ mission.description }}
+            </p>
+            <div class="mission-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">⚔️</span>
+                    <div>
+                        <small>DIFFICULTY</small>
+                        <strong>{{ mission.difficulty }}</strong>
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">⭐</span>
+                    <div>
+                        <small>MISSION REWARD</small>
+                        <strong>{{ mission.reward_xp }} XP</strong>
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">🧩</span>
+                    <div>
+                        <small>CHALLENGES</small>
+                        <strong>{{ puzzles|length }} Puzzles</strong>
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">🟢</span>
+                    <div>
+                        <small>STATUS</small>
+                        <strong class="status-online">ACTIVE</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mission-emblem">
+            <div class="emblem-ring ring-one"></div>
+            <div class="emblem-ring ring-two"></div>
+            <div class="emblem-core">
+                🕵️
+            </div>
+            <span class="emblem-label">
+                AGENT
+            </span>
+        </div>
+    </section>
+
+    <section class="briefing-section">
+        <div class="section-label">
+            <span>01</span>
+            MISSION BRIEFING
+        </div>
+        <div class="briefing-card">
+            <div class="briefing-icon">
+                📡
+            </div>
+            <div class="briefing-content">
+                <h2>
+                    Agent, your investigation begins here.
+                </h2>
+                <p>
+                    Every puzzle contains a piece of the truth.
+                    Analyze the clues, think carefully and
+                    uncover the answer step by step.
+                </p>
+                <div class="briefing-warning">
+                    <span>⚠️</span>
+                    <div>
+                        <strong>IMPORTANT</strong>
+                        <p>
+                            Each challenge must be completed
+                            before the next one becomes available.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="puzzles-section">
+        <div class="puzzles-heading">
+            <div>
+                <div class="section-label">
+                    <span>02</span>
+                    INVESTIGATION FILES
+                </div>
+                <h2>
+                    Crack the Challenges
+                </h2>
+                <p>
+                    Complete each puzzle to advance deeper
+                    into the investigation.
+                </p>
+            </div>
+
+            <div class="puzzle-counter">
+                <strong>
+                    {{ puzzles|length }}
+                </strong>
+                <span>
+                    TOTAL<br>
+                    PUZZLES
+                </span>
+            </div>
+        </div>
+
+        <div class="puzzle-timeline">
+            {% if puzzles %}
+                {% for puzzle in puzzles %}
+                <div class="puzzle-wrapper">
+                    {% if not loop.last %}
+                    <div class="timeline-line"></div>
+                    {% endif %}
+
+                    <div class="puzzle-number">
+                        <span>
+                            {{ "%02d"|format(loop.index) }}
+                        </span>
+                    </div>
+
+                    <div class="puzzle-card">
+                        <div class="puzzle-card-top">
+                            <span class="puzzle-tag">
+                                PUZZLE {{ "%02d"|format(loop.index) }}
+                            </span>
+                            {% if puzzle_status[puzzle.id] == "completed" %}
+                            <span class="puzzle-status completed">
+                                ✅ COMPLETED
+                            </span>
+                            {% elif puzzle_status[puzzle.id] == "available" %}
+                            <span class="puzzle-status available">
+                                🟢 AVAILABLE
+                            </span>
+                            {% else %}
+                            <span class="puzzle-status locked">
+                                🔒 LOCKED
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="puzzle-card-content">
+                            <div>
+                                <h3>
+                                    {{ puzzle.title }}
+                                </h3>
+                                {% if puzzle.description %}
+                                <p>
+                                    {{ puzzle.description }}
+                                </p>
+                                {% endif %}
+                                <div class="puzzle-info">
+                                    <span>
+                                        🧩 Logic Challenge
+                                    </span>
+                                    <span>
+                                        ⭐ {{ puzzle.xp }} XP
+                                    </span>
+                                    <span>
+                                        🎯 {{ puzzle.max_attempts }} Attempts
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="puzzle-action">
+                                {% if puzzle_status[puzzle.id] == "completed" %}
+                                <a href="{{ url_for('mission.solve_puzzle',mission_id=mission.id,puzzle_id=puzzle.id) }}"
+                                    class="solve-btn completed-btn">
+                                    <span>✅ SOLVED</span>
+                                    <strong>→</strong>
+                                </a>
+                                {% elif puzzle_status[puzzle.id] == "available" %}
+                                <a href="{{ url_for('mission.solve_puzzle',mission_id=mission.id,puzzle_id=puzzle.id) }}"
+                                    class="solve-btn">
+                                    <span>START</span>
+                                    <strong>→</strong>
+                                </a>
+                                {% else %}
+                                
+                                <button class="locked-btn" disabled>
+                                    🔒 LOCKED
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+
+                <div class="no-puzzles">
+                    <div class="empty-icon">
+                        🧩
+                    </div>
+                    <h2>
+                        Investigation Files Unavailable
+                    </h2>
+                    <p>
+                        This mission has not received its
+                        puzzle files yet.
+                    </p>
+                    <span>
+                        CHECK BACK LATER
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% if puzzles %}
+    <section class="mission-footer">
+        <div class="footer-icon">
+            🎯
+        </div>
+        <div>
+            <h3>
+                Your mission is waiting, Agent.
+            </h3>
+            <p>
+                Stay focused. Trust the clues.
+                The truth is hidden somewhere inside.
+            </p>
+        </div>
+
+        <div class="footer-status">
+            <span></span>
+            READY
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+{% endblock %}

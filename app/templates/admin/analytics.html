@@ -1,0 +1,201 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Analytics — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet"href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / INTELLIGENCE ANALYTICS
+            </p>
+            <h1>
+                📊 Analytics
+            </h1>
+            <p>
+                Monitor mission activity and agent performance.
+            </p>
+        </div>
+        <div class="online-status">
+            <span></span>
+            SYSTEM ONLINE
+        </div>
+    </div>
+
+    <section class="analytics-stats">
+        <div class="analytics-card">
+            <div class="analytics-icon">
+                👥
+            </div>
+            <span>
+                TOTAL AGENTS
+            </span>
+            <h2>
+                {{ total_agents }}
+            </h2>
+        </div>
+
+        <div class="analytics-card">
+            <div class="analytics-icon">
+                🗺️
+            </div>
+            <span>
+                TOTAL MISSIONS
+            </span>
+            <h2>
+                {{ total_missions }}
+            </h2>
+        </div>
+
+        <div class="analytics-card">
+            <div class="analytics-icon">
+                🧩
+            </div>
+            <span>
+                TOTAL PUZZLES
+            </span>
+            <h2>
+                {{ total_puzzles }}
+            </h2>
+        </div>
+
+        <div class="analytics-card">
+            <div class="analytics-icon">
+                🏆
+            </div>
+            <span>
+                COMPLETIONS
+            </span>
+            <h2>
+                {{ total_completions }}
+            </h2>
+        </div>
+
+        <div class="analytics-card">
+            <div class="analytics-icon">
+                ⭐
+            </div>
+            <span>
+                XP EARNED
+            </span>
+            <h2>
+                {{ total_xp }}
+            </h2>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="section-heading">
+            <div>
+                <span>
+                    MISSION DATA
+                </span>
+                <h2>
+                    Mission Performance
+                </h2>
+            </div>
+        </div>
+
+        <div class="analytics-panel">
+            {% if mission_stats %}
+                {% for item in mission_stats %}
+                <div class="mission-analytics">
+                    <div class="mission-analytics-info">
+                        <div class="mission-analytics-icon">
+                            🗺️
+                        </div>
+                        <div>
+                            <h3>
+                                {{ item.mission.title }}
+                            </h3>
+                            <p>
+                                {{ item.puzzles }} puzzles
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mission-completion">
+                        <strong>
+                            {{ item.completed }}
+                        </strong>
+                        <span>
+                            Completions
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+
+                <div class="empty-activity">
+                    <div>
+                        📊
+                    </div>
+                    <h3>
+                        No Mission Data
+                    </h3>
+                    <p>
+                        Mission analytics will appear here.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="section-heading">
+            <div>
+                <span>
+                    AGENT PERFORMANCE
+                </span>
+                <h2>
+                    Top Performing Agents
+                </h2>
+            </div>
+        </div>
+
+        <div class="analytics-panel">
+            {% if top_agents %}
+                {% for agent in top_agents %}
+                <div class="agent-performance">
+                    <div class="performance-rank">
+                        #{{ loop.index }}
+                    </div>
+                    <div class="agent-avatar">
+                        🕵️
+                    </div>
+                    <div class="performance-info">
+                        <strong>
+                            {{ agent.username }}
+                        </strong>
+                        <span>
+                            Level {{ agent.level }}
+                        </span>
+                    </div>
+                    <div class="performance-xp">
+                        {{ agent.xp }} XP
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+
+                <div class="empty-activity">
+                    <div>
+                        👥
+                    </div>
+                    <h3>
+                        No Agent Data
+                    </h3>
+                    <p>
+                        Agent performance will appear here.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}

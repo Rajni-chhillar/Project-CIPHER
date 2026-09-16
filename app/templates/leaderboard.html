@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}
+Leaderboard — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboard.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="leaderboard-page">
+    <div class="leaderboard-header">
+        <div>
+            <p class="leaderboard-eyebrow">
+                PROJECT CIPHER / AGENT RANKINGS
+            </p>
+            <h1>
+                🏆 Leaderboard
+            </h1>
+            <p>
+                The most skilled agents in the Cipher network.
+            </p>
+        </div>
+        <div class="leaderboard-status">
+            <span></span>
+            LIVE RANKINGS
+        </div>
+    </div>
+
+    {% if agents %}
+        <div class="podium">
+            {% if agents|length > 1 %}
+            <div class="podium-card second">
+                <div class="podium-rank">
+                    ②
+                </div>
+                <div class="podium-avatar">
+                    🕵️
+                </div>
+                <h2>
+                    {{ agents[1].username }}
+                </h2>
+                <span>
+                    {{ agents[1].rank }}
+                </span>
+                <strong>
+                    {{ agents[1].xp }} XP
+                </strong>
+                <small>
+                    {{ agents[1].missions_completed }}
+                    Missions
+                </small>
+            </div>
+            {% endif %}
+
+            <div class="podium-card first">
+                <div class="crown">
+                    👑
+                </div>
+                <div class="podium-rank">
+                    ①
+                </div>
+                <div class="podium-avatar">
+                    🕵️
+                </div>
+                <h2>
+                    {{ agents[0].username }}
+                </h2>
+                <span>
+                    {{ agents[0].rank }}
+                </span>
+                <strong>
+                    {{ agents[0].xp }} XP
+                </strong>
+                <small>
+                    {{ agents[0].missions_completed }}
+                    Missions
+                </small>
+            </div>
+
+            {% if agents|length > 2 %}
+            <div class="podium-card third">
+                <div class="podium-rank">
+                    ③
+                </div>
+                <div class="podium-avatar">
+                    🕵️
+                </div>
+                <h2>
+                    {{ agents[2].username }}
+                </h2>
+                <span>
+                    {{ agents[2].rank }}
+                </span>
+                <strong>
+                    {{ agents[2].xp }} XP
+                </strong>
+                <small>
+                    {{ agents[2].missions_completed }}
+                    Missions
+                </small>
+            </div>
+            {% endif %}
+        </div>
+
+        <section class="ranking-section">
+            <div class="section-heading">
+                <div>
+                    <span>
+                        CIPHER NETWORK
+                    </span>
+                    <h2>
+                        All Agents
+                    </h2>
+                </div>
+                <div class="agent-count">
+                    {{ agents|length }} Agents
+                </div>
+            </div>
+
+            <div class="ranking-list">
+                {% for agent in agents %}
+                <div class="agent-row
+                    {% if agent.id == current_user.id %}
+                        current-agent
+                    {% endif %}">
+                    <div class="rank-number">
+                        {% if loop.index == 1 %}
+                            🥇
+                        {% elif loop.index == 2 %}
+                            🥈
+                        {% elif loop.index == 3 %}
+                            🥉
+                        {% else %}
+                            #{{ loop.index }}
+                        {% endif %}
+                    </div>
+
+                    <div class="agent-avatar">
+                        🕵️
+                    </div>
+
+                    <div class="agent-info">
+                        <strong>
+                            {{ agent.username }}
+                            {% if agent.id == current_user.id %}
+                                <span class="you-badge">
+                                    YOU
+                                </span>
+                            {% endif %}
+                        </strong>
+                        <span>
+                            {{ agent.rank }}
+                        </span>
+                    </div>
+
+                    <div class="agent-stat">
+                        <small>
+                            LEVEL
+                        </small>
+                        <strong>
+                            {{ agent.level }}
+                        </strong>
+                    </div>
+
+                    <div class="agent-stat">
+                        <small>
+                            MISSIONS
+                        </small>
+                        <strong>
+                            {{ agent.missions_completed }}
+                        </strong>
+                    </div>
+
+                    <div class="agent-stat">
+                        <small>
+                            BADGES
+                        </small>
+                        <strong>
+                            {{ agent.badges }}
+                        </strong>
+                    </div>
+
+                    <div class="agent-xp">
+                        <strong>
+                            {{ agent.xp }}
+                        </strong>
+                        <span>
+                            XP
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% else %}
+
+        <div class="empty-leaderboard">
+            <div>
+                🏆
+            </div>
+            <h2>
+                No Agents Yet
+            </h2>
+            <p>
+                The Cipher network is waiting for its first agents.
+            </p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+{% block title %}
+Agent Command Center
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="cipher-dashboard">
+    <aside class="cipher-sidebar"></aside>
+    <main class="cipher-main">
+        <header class="cipher-topbar">
+            <div>
+                <p class="terminal-label">
+                    PROJECT CIPHER // SECURE CHANNEL
+                </p>
+                <h1>
+                    Welcome back,
+                    <span>{{ user.name }}</span>
+                </h1>
+                <p class="header-subtitle">
+                    Your next investigation is waiting, Agent.
+                </p>
+            </div>
+
+            <div class="topbar-right">
+                <div class="signal-box">
+                    <span class="signal-dot"></span>
+                    SIGNAL STABLE
+                </div>
+                <div class="top-avatar">
+                    <img src="{{ url_for('static', filename='images/avatar.png') }}"
+                         alt="Agent Avatar">
+                </div>
+            </div>
+        </header>
+
+        <section class="mission-alert">
+            <div class="alert-left">
+                <div class="alert-icon">
+                    !
+                </div>
+                <div>
+                    <span>NEW INTELLIGENCE RECEIVED</span>
+                    <h2>
+                        An investigation requires your attention.
+                    </h2>
+                    <p>
+                        Enter the Mission Center and uncover what happened.
+                    </p>
+                </div>
+            </div>
+            <a href="{{ url_for('mission.missions') }}"
+               class="alert-button">
+                OPEN MISSION CENTER →
+            </a>
+        </section>
+
+        <section class="agent-stats">
+            <div class="stat-card">
+                <div class="stat-icon xp-icon">
+                    ⚡
+                </div>
+                <div>
+                    <span>TOTAL XP</span>
+                    <strong>
+                        {{ user.xp }}
+                    </strong>
+                    <small>
+                        Experience Points
+                    </small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon level-icon">
+                    ◉
+                </div>
+                <div>
+                    <span>AGENT LEVEL</span>
+                    <strong>
+                        {{ user.level }}
+                    </strong>
+                    <small>
+                        {{ user.rank }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon mission-icon">
+                    ◈
+                </div>
+                <div>
+                    <span>MISSIONS</span>
+                    <strong>
+                        {{ user.missions_completed }}
+                    </strong>
+                    <small>
+                        Investigations solved
+                    </small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon badge-icon">
+                    ♛
+                </div>
+                <div>
+                    <span>BADGES</span>
+                    <strong>
+                        {{ user.badges }}
+                    </strong>
+                    <small>
+                        Achievements unlocked
+                    </small>
+                </div>
+            </div>
+        </section>
+
+        <section class="command-grid">
+            <div class="glass-panel level-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span>AGENT DEVELOPMENT</span>
+                        <h2>
+                            ⚡ Level Progress
+                        </h2>
+                    </div>
+                    <div class="level-badge">
+                        LVL {{ user.level }}
+                    </div>
+                </div>
+                {% set progress = user.xp % 100 %}
+                <div class="level-display">
+                    <div class="level-number">
+                        {{ user.level }}
+                    </div>
+                    <div class="level-info">
+                        <strong>
+                            {{ user.rank }}
+                        </strong>
+                        <span>
+                            {{ progress }}% toward next level
+                        </span>
+                    </div>
+                </div>
+
+                <div class="xp-track">
+                    <div class="xp-progress"
+                         style="width: {{ progress }}%;">
+                    </div>
+                </div>
+
+                <div class="xp-labels">
+                    <span>
+                        {{ progress }} / 100 XP
+                    </span>
+                    <span>
+                        {{ 100 - progress }} XP remaining
+                    </span>
+                </div>
+            </div>
+
+            <div class="glass-panel agent-card">
+                <div class="agent-card-bg"></div>
+                <div class="agent-card-content">
+                    <span class="classified">
+                        CLASSIFIED // AGENT PROFILE
+                    </span>
+                    <img src="{{ url_for('static', filename='images/avatar.png') }}"
+                         alt="Agent">
+                    <h2>
+                        {{ user.name }}
+                    </h2>
+                    <p>
+                        {{ user.rank }}
+                    </p>
+                    <div class="agent-id">
+                        AGENT // CIPHER-{{ user.id }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mission-command">
+         <!--   <div class="section-title">
+                <div>
+                    <span>PRIMARY OBJECTIVE</span>
+                    <h2>
+                        🎯 Active Investigation
+                    </h2>
+                </div>
+                <span class="priority">
+                    HIGH PRIORITY
+                </span>
+            </div> 
+
+            <div class="mission-feature">
+                <div class="mission-visual">
+                    <div class="mission-grid-lines"></div>
+                    <div class="mission-crosshair">
+                        ◉
+                    </div>
+                    <span class="mission-code">
+                        CASE FILE // 001
+                    </span>
+                    <span class="mission-classification">
+                        CLASSIFIED
+                    </span>
+                </div>
+            </div>
+        </section>  -->
+
+        <section class="lower-grid">
+            <div class="glass-panel achievement-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span>ACHIEVEMENT SYSTEM</span>
+                        <h2>
+                            🏆 Agent Milestones
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="achievement-list">
+                    {% if user.badges >= 1 %}
+                    <div class="achievement unlocked">
+                        <div>🥇</div>
+                        <section>
+                            <strong>
+                                First Mission
+                            </strong>
+                            <span>
+                                Completed your first investigation
+                            </span>
+                        </section>
+                        <b>UNLOCKED</b>
+                    </div>
+                    {% else %}
+                    <div class="achievement locked">
+                        <div>🔒</div>
+                        <section>
+                            <strong>
+                                First Mission
+                            </strong>
+                            <span>
+                                Complete your first investigation
+                            </span>
+                        </section>
+                        <b>LOCKED</b>
+                    </div>
+                    {% endif %}
+
+                    {% if user.badges >= 2 %}
+                    <div class="achievement unlocked">
+                        <div>🔥</div>
+                        <section>
+                            <strong>
+                                Puzzle Solver
+                            </strong>
+                            <span>
+                                Crack multiple classified puzzles
+                            </span>
+                        </section>
+                        <b>UNLOCKED</b>
+                    </div>
+                    {% else %}
+                    <div class="achievement locked">
+                        <div>🔒</div>
+                        <section>
+                            <strong>
+                                Puzzle Solver
+                            </strong>
+                            <span>
+                                Crack multiple classified puzzles
+                            </span>
+                        </section>
+                        <b>LOCKED</b>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="glass-panel intelligence-panel">
+                <div class="ai-orb">
+                    ◉
+                </div>
+                <span>
+                    CIPHER INTELLIGENCE
+                </span>
+                <h2>
+                    Agent Briefing
+                </h2>
+                <p>
+                    Every clue matters. Every decision changes the path.
+                    Don't rush the investigation.
+                </p>
+                <div class="ai-tip">
+                    <span>TIP</span>
+                    <strong>
+                        Observe before you answer.
+                    </strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel activity-panel">
+            <div class="panel-heading">
+                <div>
+                    <span>MISSION LOG</span>
+                    <h2>
+                        📡 Recent Activity
+                    </h2>
+                </div>
+                <span class="live-indicator">
+                    ● LIVE
+                </span>
+            </div>
+
+            <div class="activity-list">
+                <div>
+                    <span class="activity-dot"></span>
+                    <p>
+                        Mission system initialized
+                    </p>
+                    <small>
+                        SYSTEM
+                    </small>
+                </div>
+                <div>
+                    <span class="activity-dot"></span>
+                    <p>
+                        Agent profile synchronized
+                    </p>
+                    <small>
+                        SYSTEM
+                    </small>
+                </div>
+                <div>
+                    <span class="activity-dot"></span>
+                    <p>
+                        Mission database connected
+                    </p>
+                    <small>
+                        SYSTEM
+                    </small>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+{% endblock %}

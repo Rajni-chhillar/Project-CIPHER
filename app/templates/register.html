@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}
+Create Agent
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-box">
+        <h1>🕵️ Become an Agent</h1>
+        <form method="POST">
+            <input type="text"
+                name="username"
+                placeholder="Agent Name"
+                required>
+        
+            <input type="email"
+                name="email"
+                placeholder="Agent Email"
+                required>
+                
+            <input id="password"
+                type="password"
+                name="password"
+                placeholder="Password"
+                required>
+                
+            <div id="strength"></div>
+            <button>Join Cipher</button>
+        </form>
+
+        <div class="auth-switch">
+            <span>Already have an account?</span>
+            <a href="{{ url_for('auth.login')}}">
+                Login
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static',filename='js/auth.js') }}"></script>
+
+{% endblock %}

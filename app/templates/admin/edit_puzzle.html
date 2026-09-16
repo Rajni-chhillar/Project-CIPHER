@@ -1,0 +1,144 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Edit Puzzle
+{% endblock %}
+{% block css %}
+
+<link rel="stylesheet" href="{{ url_for('static',filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / PUZZLES
+            </p>
+            <h1>
+                ✏️ Edit Puzzle
+            </h1>
+            <p class="admin-subtitle">
+                Update puzzle information.
+            </p>
+        </div>
+    </div>
+
+    <div class="admin-form-card">
+        <form method="POST" action="{{ url_for('admin.edit_puzzle',puzzle_id=puzzle.id) }}">
+
+            <div class="form-group">
+                <label>
+                    Mission
+                </label>
+                <select name="mission_id"
+                    required>
+                    {% for mission in missions %}
+                        <option value="{{ mission.id }}"
+                            {% if mission.id == puzzle.mission_id %}
+                            selected
+                            {% endif %}>
+                            Mission {{ "%02d"|format(mission.id) }}
+                            —
+                            {{ mission.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Puzzle Title
+                </label>
+                <input type="text"
+                    name="title"
+                    value="{{ puzzle.title }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Description
+                </label>
+                <textarea name="description"
+                    rows="4"
+                    required>{{ puzzle.description }}
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Clue
+                </label>
+                <textarea name="clue"
+                    rows="3">{{ puzzle.clue or '' }}
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Question
+                </label>
+                <textarea name="question"
+                    rows="4"
+                    required>{{ puzzle.question }}
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Correct Answer
+                </label>
+                <input type="text"
+                    name="answer"
+                    value="{{ puzzle.answer }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Puzzle Order
+                </label>
+                <input type="number"
+                    name="order"
+                    value="{{ puzzle.order }}"
+                    min="1"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    XP Reward
+                </label>
+                <input type="number"
+                    name="xp"
+                    value="{{ puzzle.xp }}"
+                    min="0"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Maximum Attempts
+                </label>
+                <input type="number"
+                    name="max_attempts"
+                    value="{{ puzzle.max_attempts }}"
+                    min="1"
+                    required>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('admin.manage_puzzles') }}"
+                    class="cancel-btn">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="save-btn">
+                    💾 Update Puzzle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% block title %}
+About — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="about-page">
+    <section class="about-hero">
+        <div class="classified-tag">
+            ◉ PROJECT CIPHER // CLASSIFIED FILE
+        </div>
+        <h1>
+            ENTER THE
+            <span>WORLD OF MYSTERY</span>
+        </h1>
+        <p>
+            Every clue hides a secret.
+            Every puzzle reveals a truth.
+            Every choice brings you closer to the answer.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.login') }}"
+               class="primary-btn">
+                🚀 START MISSION
+            </a>
+            <a href="{{ url_for('main.index') }}"
+               class="secondary-btn">
+                ← BACK TO HOME
+            </a>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">
+            01 // THE OPERATION
+        </div>
+        <h2>
+            What is <span>Project Cipher?</span>
+        </h2>
+        <p class="section-description">
+            Project Cipher is an interactive escape-room
+            experience where agents investigate mysterious
+            cases, uncover hidden clues and solve challenging
+            puzzles.
+        </p>
+        <p class="section-description">
+            Each mission contains a series of challenges.
+            Solve them correctly, earn XP, unlock achievements
+            and progress towards becoming a Cipher Master.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">
+            02 // OPERATION PROTOCOL
+        </div>
+        <h2>
+            How It <span>Works</span>
+        </h2>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-number">
+                    01
+                </div>
+                <div class="process-icon">
+                    🗺️
+                </div>
+                <h3>
+                    Choose Mission
+                </h3>
+                <p>
+                    Select an investigation and enter
+                    the case.
+                </p>
+            </div>
+
+            <div class="process-card">
+                <div class="process-number">
+                    02
+                </div>
+                <div class="process-icon">
+                    🧩
+                </div>
+                <h3>
+                    Solve Puzzles
+                </h3>
+                <p>
+                    Decode clues and crack the challenges
+                    hidden inside every mission.
+                </p>
+            </div>
+
+            <div class="process-card">
+                <div class="process-number">
+                    03
+                </div>
+                <div class="process-icon">
+                    ⭐
+                </div>
+                <h3>
+                    Earn XP
+                </h3>
+                <p>
+                    Every successful challenge rewards
+                    you with valuable experience.
+                </p>
+            </div>
+
+            <div class="process-card">
+                <div class="process-number">
+                    04
+                </div>
+                <div class="process-icon">
+                    🔓
+                </div>
+                <h3>
+                    Unlock Cases
+                </h3>
+                <p>
+                    Complete missions to unlock deeper
+                    investigations.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">
+            03 // SYSTEM CAPABILITIES
+        </div>
+        <h2>
+            Built For <span>Agents</span>
+        </h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <div>
+                    <h3>Interactive Missions</h3>
+                    <p>
+                        Investigate unique cases and
+                        uncover hidden stories.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🧩</div>
+                <div>
+                    <h3>Dynamic Puzzles</h3>
+                    <p>
+                        Solve logic-based challenges,
+                        clues and questions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <div>
+                    <h3>XP & Levels</h3>
+                    <p>
+                        Earn XP and rise through the
+                        agent ranks.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div>
+                    <h3>Achievements</h3>
+                    <p>
+                        Unlock badges by completing
+                        special challenges.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🥇</div>
+                <div>
+                    <h3>Leaderboard</h3>
+                    <p>
+                        Compete with other agents and
+                        climb the rankings.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div>
+                    <h3>Progressive Unlocking</h3>
+                    <p>
+                        New missions become available
+                        as your investigation progresses.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="technology-section">
+        <div class="section-label">
+            04 // SYSTEM ARCHITECTURE
+        </div>
+        <h2>
+            Powered By <span>Technology</span>
+        </h2>
+        <p>
+            Project Cipher combines modern web technologies
+            with interactive game mechanics to create an
+            immersive investigation experience.
+        </p>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <strong>PYTHON</strong>
+                <span>Core Logic</span>
+            </div>
+            <div class="tech-item">
+                <strong>FLASK</strong>
+                <span>Web Framework</span>
+            </div>
+            <div class="tech-item">
+                <strong>SQLALCHEMY</strong>
+                <span>Database Layer</span>
+            </div>
+            <div class="tech-item">
+                <strong>HTML</strong>
+                <span>Interface</span>
+            </div>
+            <div class="tech-item">
+                <strong>CSS</strong>
+                <span>Visual System</span>
+            </div>
+            <div class="tech-item">
+                <strong>JAVASCRIPT</strong>
+                <span>Interactions</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-cta">
+        <div class="cta-glow"></div>
+        <div class="section-label">
+            FINAL TRANSMISSION
+        </div>
+        <h2>
+            READY TO BECOME
+            <span>AN AGENT?</span>
+        </h2>
+        <p>
+            The case is waiting.
+            The truth is hidden.
+            Your investigation begins now.
+        </p>
+        <a href="{{ url_for('auth.login') }}"
+           class="primary-btn">
+            🚀 ENTER THE CIPHER
+        </a>
+    </section>
+</div>
+
+{% endblock %}

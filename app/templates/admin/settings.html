@@ -1,0 +1,202 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Settings — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / SYSTEM CONFIGURATION
+            </p>
+            <h1>
+                ⚙️ Settings
+            </h1>
+            <p>
+                Configure your Project Cipher control center.
+            </p>
+        </div>
+        <div class="online-status">
+            <span></span>
+            SYSTEM ONLINE
+        </div>
+    </div>
+
+    <section class="settings-grid">
+        <div class="settings-card">
+            <div class="settings-icon">
+                🕵️
+            </div>
+            <div class="settings-content">
+                <h2>
+                    Administrator Profile
+                </h2>
+                <p>
+                    Current administrator account information.
+                </p>
+                <div class="setting-row">
+                    <span>
+                        Username
+                    </span>
+                    <strong>
+                        {{ current_user.username }}
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Email
+                    </span>
+                    <strong>
+                        {{ current_user.email }}
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Role
+                    </span>
+                    <strong class="setting-value">
+                        Administrator
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-icon">
+                🖥️
+            </div>
+            <div class="settings-content">
+                <h2>
+                    System Status
+                </h2>
+                <p>
+                    Current Project Cipher system status.
+                </p>
+                <div class="setting-row">
+                    <span>
+                        System
+                    </span>
+                    <strong class="online-text">
+                        ONLINE
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Mission Engine
+                    </span>
+                    <strong class="online-text">
+                        ACTIVE
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Puzzle Engine
+                    </span>
+                    <strong class="online-text">
+                        ACTIVE
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-icon">
+                🎮
+            </div>
+            <div class="settings-content">
+                <h2>
+                    Game Configuration
+                </h2>
+                <p>
+                    Current gameplay configuration.
+                </p>
+                <div class="setting-row">
+                    <span>
+                        Puzzle Attempts
+                    </span>
+                    <strong>
+                        3
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        XP System
+                    </span>
+                    <strong class="online-text">
+                        ENABLED
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Mission Unlocking
+                    </span>
+                    <strong class="online-text">
+                        SEQUENTIAL
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-icon">
+                🔐
+            </div>
+            <div class="settings-content">
+                <h2>
+                    Security
+                </h2>
+                <p>
+                    Administrator security information.
+                </p>
+                <div class="setting-row">
+                    <span>
+                        Admin Access
+                    </span>
+                    <strong class="online-text">
+                        ENABLED
+                    </strong>
+                </div>
+                <div class="setting-row">
+                    <span>
+                        Authentication
+                    </span>
+                    <strong class="online-text">
+                        ACTIVE
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="section-heading">
+            <div>
+                <span>
+                    CONFIGURATION
+                </span>
+                <h2>
+                    System Actions
+                </h2>
+            </div>
+        </div>
+
+        <div class="settings-actions">
+            <form method="POST">
+                <button type="submit"
+                        class="settings-save-btn">
+                    💾 Save Settings
+                </button>
+            </form>
+            <a href="{{ url_for('admin.dashboard') }}"
+               class="settings-back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

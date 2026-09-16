@@ -1,0 +1,159 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Add Puzzle
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for( 'static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <div>
+            <p class="eyebrow">
+                PROJECT CIPHER
+            </p>
+            <h1>
+                🧩 Add New Puzzle
+            </h1>
+            <p>
+                Create a new challenge for your agents.
+            </p>
+        </div>
+    </div>
+
+    <div class="admin-form-card">
+        <form method="POST" action="{{ url_for('admin.add_puzzle') }}">
+            <div class="form-group">
+                <label>
+                    Select Mission
+                </label>
+                <select name="mission_id" required>
+                    <option value="">
+                        -- Select Mission --
+                    </option>
+                    {% for mission in missions %}
+                        <option value="{{ mission.id }}">
+                            Mission
+                            {{ "%02d"|format(mission.id) }}
+                            —
+                            {{ mission.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Puzzle Title
+                </label>
+                <input type="text"
+                    name="title"
+                    placeholder="e.g. The Hidden Code"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Description
+                </label>
+                <textarea name="description"
+                    rows="4"
+                    placeholder="Describe the puzzle...">
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Clue
+                </label>
+                <textarea name="clue"
+                    rows="3"
+                    placeholder="Give the agent a clue...">
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Question
+                </label>
+                <textarea name="question"
+                    rows="3"
+                    placeholder="What should the agent solve?"
+                    required>
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Correct Answer
+                </label>
+                <input type="text"
+                    name="answer"
+                    placeholder="Enter correct answer"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Puzzle Image
+                </label>
+                <input type="text"
+                    name="image"
+                    placeholder="e.g. puzzle1.jpg">
+                <small>
+                    Optional — image filename from static/images
+                </small>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>
+                        Puzzle Order
+                    </label>
+                    <input type="number"
+                        name="order"
+                        value="1"
+                        min="1"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        XP Reward
+                    </label>
+                    <input type="number"
+                        name="xp"
+                        value="100"
+                        min="0"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Max Attempts
+                    </label>
+                    <input type="number"
+                        name="max_attempts"
+                        value="3"
+                        min="1"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('admin.manage_puzzles') }}"
+                    class="cancel-btn">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="save-btn">
+                    💾 Save Puzzle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

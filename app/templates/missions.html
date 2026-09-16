@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{% block title %}
+Mission Center — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mission.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="mission-page">
+    <div class="mission-grid"></div>
+    <div class="mission-glow glow-one"></div>
+    <div class="mission-glow glow-two"></div>
+
+    <header class="mission-header">
+        <div class="mission-heading">
+            <div class="eyebrow">
+                <span class="pulse-dot"></span>
+                PROJECT CIPHER / OPERATIONS
+            </div>
+            <h1>
+                Mission <span>Center</span>
+            </h1>
+            <p>
+                Every investigation hides a truth.
+                Choose your mission, Agent.
+            </p>
+        </div>
+
+        <div class="system-status">
+            <div class="status-icon">
+                ◉
+            </div>
+            <div>
+                <small>
+                    NETWORK STATUS
+                </small>
+                <strong>
+                    SYSTEM ONLINE
+                </strong>
+            </div>
+        </div>
+    </header>
+
+    <section class="mission-intro">
+        <div>
+            <span class="intro-label">
+                AVAILABLE OPERATIONS
+            </span>
+            <h2>
+                Your next assignment awaits.
+            </h2>
+            <p>
+                Complete investigations, crack puzzles,
+                earn XP and unlock deeper levels of Project Cipher.
+            </p>
+        </div>
+
+        <div class="mission-counter">
+            <strong>
+                {{ missions|length }}
+            </strong>
+            <span>
+                OPERATIONS
+            </span>
+        </div>
+    </section>
+
+    <section class="missions-list">
+        {% for mission in missions %}
+        <article class="mission-card
+            {% if mission_status[mission.id] == 'completed' %}
+                completed
+            {% elif mission_status[mission.id] == 'unlocked' %}
+                available
+            {% else %}
+                locked
+            {% endif %}">
+
+            <div class="mission-visual">
+                <div class="visual-number">
+                    {{ "%02d"|format(mission.id) }}
+                </div>
+                <div class="mission-icon">
+                    {% if mission.id == 1 %}
+                        🧪
+                    {% elif mission.id == 2 %}
+                        🏦
+                    {% elif mission.id == 3 %}
+                        🏚️
+                    {% elif mission.id == 4 %}
+                        🚆
+                    {% elif mission.id == 5 %}
+                        🧬
+                    {% else %}
+                        🎯
+                    {% endif %}
+                </div>
+                <div class="visual-line"></div>
+                <span class="classified">
+                    CIPHER FILE
+                </span>
+            </div>
+
+            <div class="mission-info">
+                <div class="mission-top">
+                    <div>
+                        {% if mission_status[mission.id] == "completed" %}
+                            <span class="mission-badge completed-badge">
+                                <span>✓</span>
+                                COMPLETED
+                            </span>
+                        {% elif mission_status[mission.id] == "unlocked" %}
+                            <span class="mission-badge available-badge">
+                                <span class="live-dot"></span>
+                                AVAILABLE
+                            </span>
+                        {% else %}
+                            <span class="mission-badge locked-badge">
+                                🔒 CLASSIFIED
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <span class="difficulty">
+                        <span>◆</span>
+                        {{ mission.difficulty|upper }}
+                    </span>
+                </div>
+
+                <div class="mission-title-area">
+                    <span class="mission-code">
+                        OPERATION // CIPHER-{{ "%02d"|format(mission.id) }}
+                    </span>
+                    <h2>
+                        {{ mission.title }}
+                    </h2>
+                    <p>
+                        {{ mission.description }}
+                    </p>
+                </div>
+
+                <div class="mission-data">
+                    <div class="data-item">
+                        <span class="data-icon">
+                            ✦
+                        </span>
+                        <div>
+                            <small>
+                                REWARD
+                            </small>
+                            <strong>
+                                {{ mission.reward_xp }} XP
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="data-item">
+                        <span class="data-icon">
+                            ⬡
+                        </span>
+                        <div>
+                            <small>
+                                CHALLENGES
+                            </small>
+                            <strong>
+                                {{ mission.puzzles|length }}
+                                Puzzles
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="data-item">
+                        <span class="data-icon">
+                            ◷
+                        </span>
+                        <div>
+                            <small>
+                                EST. TIME
+                            </small>
+                            <strong>
+                                15–20 MIN
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mission-action">
+                    {% if mission_status[mission.id] == "completed" %}
+                        <div class="completed-text">
+                            <span>✓</span>
+                            INVESTIGATION COMPLETE
+                        </div>
+
+                        <a href="{{ url_for('mission.mission_detail',mission_id=mission.id) }}"
+                           class="mission-btn replay-btn">
+                            <span>
+                                ↻
+                            </span>
+                            REPLAY MISSION
+                        </a>
+
+                    {% elif mission_status[mission.id] == "unlocked" %}
+                        <a href="{{ url_for('mission.mission_detail',mission_id=mission.id) }}"
+                           class="mission-btn start-btn">
+                            <span>
+                                ▶
+                            </span>
+                            START INVESTIGATION
+                        </a>
+                    {% else %}
+                        <button class="mission-btn locked-btn"
+                                disabled>
+                            <span>
+                                🔒
+                            </span>
+                            MISSION LOCKED
+                        </button>
+                        <p class="unlock-text">
+                            Complete Mission {{ mission.id - 1 }}
+                            to decrypt this operation.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-corner top-left"></div>
+            <div class="card-corner top-right"></div>
+            <div class="card-corner bottom-left"></div>
+            <div class="card-corner bottom-right"></div>
+        </article>
+        {% else %}
+        <div class="no-missions">
+            <div class="empty-icon">
+                ◈
+            </div>
+            <h2>
+                NO ACTIVE OPERATIONS
+            </h2>
+            <p>
+                New investigations will be transmitted here.
+            </p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="mission-stats">
+        <div class="stat-box">
+            <span class="stat-icon">
+                ◈
+            </span>
+            <div>
+                <strong>
+                    {{ missions|length }}
+                </strong>
+                <span>
+                    TOTAL MISSIONS
+                </span>
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <span class="stat-icon">
+                ◉
+            </span>
+            <div>
+                <strong>
+                    {{ mission_status.values()
+                        |select("equalto", "unlocked")
+                        |list
+                        |length
+                    }}
+                </strong>
+                <span>
+                    AVAILABLE
+                </span>
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <span class="stat-icon">
+                ✓
+            </span>
+            <div>
+                <strong>
+                    {{ mission_status.values()
+                        |select("equalto", "completed")
+                        |list
+                        |length
+                    }}
+                </strong>
+                <span>
+                    COMPLETED
+                </span>
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <span class="stat-icon">
+                🔒
+            </span>
+            <div>
+                <strong>
+                    {{ mission_status.values()
+                        |select("equalto", "locked")
+                        |list
+                        |length
+                    }}
+                </strong>
+                <span>
+                    CLASSIFIED
+                </span>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

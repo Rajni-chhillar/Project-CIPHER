@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}
+Agent Profile — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="profile-page">
+    <div class="profile-header">
+        <div class="profile-identity">
+            <div class="profile-avatar">
+                🕵️
+            </div>
+            <div>
+                <p class="profile-eyebrow">
+                    PROJECT CIPHER / AGENT PROFILE
+                </p>
+                <h1>
+                    {{ current_user.username }}
+                </h1>
+                <span class="agent-rank">
+                    {{ current_user.rank }}
+                </span>
+            </div>
+        </div>
+        <div class="agent-status">
+            <span></span>
+            ACTIVE AGENT
+        </div>
+    </div>
+
+    <div class="level-card">
+        <div class="level-top">
+            <div>
+                <small>AGENT LEVEL</small>
+                <strong>
+                    LEVEL {{ current_user.level }}
+                </strong>
+            </div>
+            <div class="xp-value">
+                {{ current_user.xp }} XP
+            </div>
+        </div>
+
+        <div class="xp-bar">
+            <div
+                class="xp-fill"
+                style="width: {{ (current_user.xp % 100) }}%;">
+            </div>
+        </div>
+        <div class="xp-bottom">
+            <span>
+                Progress to next level
+            </span>
+            <span>
+                {{ current_user.xp % 100 }} / 100 XP
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-stats">
+        <div class="profile-stat">
+            <span class="stat-icon">⭐</span>
+            <div>
+                <small>TOTAL XP</small>
+                <strong>{{ current_user.xp }}</strong>
+            </div>
+        </div>
+
+        <div class="profile-stat">
+            <span class="stat-icon">🗺️</span>
+            <div>
+                <small>MISSIONS</small>
+                <strong>
+                    {{ current_user.missions_completed }}
+                </strong>
+            </div>
+        </div>
+
+        <div class="profile-stat">
+            <span class="stat-icon">🧩</span>
+            <div>
+                <small>PUZZLES SOLVED</small>
+                <strong>
+                    {{ solved_puzzles }}
+                </strong>
+            </div>
+        </div>
+
+        <div class="profile-stat">
+            <span class="stat-icon">🏆</span>
+            <div>
+                <small>BADGES</small>
+                <strong>
+                    {{ current_user.badges }}
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+        <section class="profile-panel">
+            <div class="panel-heading">
+                <span>IDENTITY</span>
+                <h2>Agent Information</h2>
+            </div>
+            <div class="info-row">
+                <span>Username</span>
+                <strong>
+                    {{ current_user.username }}
+                </strong>
+            </div>
+
+            <div class="info-row">
+                <span>Email</span>
+                <strong>
+                    {{ current_user.email }}
+                </strong>
+            </div>
+            <div class="info-row">
+                <span>Rank</span>
+                <strong>
+                    {{ current_user.rank }}
+                </strong>
+            </div>
+            <div class="info-row">
+                <span>Current Level</span>
+                <strong>
+                    {{ current_user.level }}
+                </strong>
+            </div>
+        </section>
+
+        <section class="profile-panel">
+            <div class="panel-heading">
+                <span>PERFORMANCE</span>
+                <h2>Mission Record</h2>
+            </div>
+            <div class="performance-item">
+                <div>
+                    <span>Puzzle Completion</span>
+                    <strong>
+                        {% if total_puzzles > 0 %}
+                            {{ ((solved_puzzles / total_puzzles) * 100)|round|int }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </strong>
+                </div>
+                <div class="mini-progress">
+                    <div style="width:
+                        {% if total_puzzles > 0 %}
+                            {{ (solved_puzzles / total_puzzles) * 100 }}%
+                        {% else %}
+                            0%
+                        {% endif %};">
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-item">
+                <div>
+                    <span>Mission Completion</span>
+                    <strong>
+                        {{ current_user.missions_completed }}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="performance-item">
+                <div>
+                    <span>Achievements</span>
+                    <strong>
+                        {{ current_user.badges }}
+                    </strong>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="profile-footer">
+        <span>
+            🔐 Agent credentials verified
+        </span>
+        <span>
+            SYSTEM STATUS: ONLINE
+        </span>
+    </div>
+</div>
+
+{% endblock %}

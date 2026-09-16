@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}
+{{ puzzle.title }}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/solve_puzzle.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="solve-page">
+    <div class="solve-topbar">
+        <div class="project-label">
+            PROJECT CIPHER
+        </div>
+        <div class="mission-label">
+            MISSION {{ "%02d"|format(mission.id) }}
+        </div>
+    </div>
+
+    <div class="puzzle-header">
+        <div class="puzzle-number">
+            PUZZLE {{ "%02d"|format(puzzle.order) }}
+        </div>
+        <h1>
+            {{ puzzle.title }}
+        </h1>
+        <p class="puzzle-description">
+            {{ puzzle.description }}
+        </p>
+    </div>
+
+    {% if puzzle.clue %}
+    <div class="clue-box">
+        <div class="clue-title">
+            💡 CLUE
+        </div>
+        <p>
+            {{ puzzle.clue }}
+        </p>
+    </div>
+    {% endif %}
+
+    <div class="objective-box">
+        <div class="objective-label">
+            YOUR OBJECTIVE
+        </div>
+        <h2>
+            {{ puzzle.question }}
+        </h2>
+    </div>
+
+    <div class="answer-card">
+        <div class="answer-header">
+            <span>🔐</span>
+            <div>
+                <h3>
+                    Submit Your Answer
+                </h3>
+                <p>
+                    Enter the answer you discovered during your investigation.
+                </p>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for( 'mission.submit_puzzle', mission_id=mission.id,puzzle_id=puzzle.id) }}"
+            class="answer-form">
+            <label for="answer">
+                YOUR ANSWER
+            </label>
+            <input type="text"
+                id="answer"
+                name="answer"
+                placeholder="Type your answer..."
+                autocomplete="off"
+                required>
+            <button type="submit">
+                🚀 Submit Answer
+            </button>
+        </form>
+    </div>
+
+    <div class="puzzle-stats">
+        <div class="stat">
+            <span class="stat-icon">
+                🎯
+            </span>
+            <div>
+                <small>
+                    ATTEMPTS REMAINING
+                </small>
+                <strong>
+                    {{ progress.attempts }}
+                </strong>
+            </div>
+        </div>
+        <div class="stat">
+            <span class="stat-icon">
+                ⭐
+            </span>
+            <div>
+                <small>
+                    REWARD
+                </small>
+                <strong>
+                    {{ puzzle.xp }} XP
+                </strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

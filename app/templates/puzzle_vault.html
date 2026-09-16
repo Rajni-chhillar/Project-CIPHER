@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}
+Puzzle Vault — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/puzzle_vault.css')}}">
+{% endblock %}
+{% block content %}
+
+<div class="puzzle-vault-page">
+    <div class="vault-header">
+        <p>PROJECT CIPHER</p>
+        <h1>🧩 Puzzle Vault</h1>
+        <span>Your collection of investigations and challenges.</span>
+    </div>
+    <div class="vault-stats">
+        <div>
+            <strong>{{ puzzles|length }}</strong>
+            <span>Total Puzzles</span>
+        </div>
+        <div>
+            <strong>{{ completed_puzzle_ids|length }}</strong>
+            <span>Solved</span>
+        </div>
+        <div>
+            <strong>
+                {{ puzzles|length - completed_puzzle_ids|length }}
+            </strong>
+            <span>Remaining</span>
+        </div>
+    </div>
+
+    <div class="vault-list">
+        {% for puzzle in puzzles %}
+        <div class="vault-card">
+            <div class="vault-number">
+                🧩
+            </div>
+            <div class="vault-info">
+                <small>
+                    MISSION {{ "%02d"|format(puzzle.mission_id) }}
+                </small>
+                <h2>
+                    {{ puzzle.title }}
+                </h2>
+                <p>
+                    {{ puzzle.description }}
+                </p>
+                <span>
+                    ⭐ {{ puzzle.xp }} XP
+                </span>
+            </div>
+
+            <div class="vault-status">
+                {% if puzzle.id in completed_puzzle_ids %}
+                    <strong class="solved">
+                        ✅ SOLVED
+                    </strong>
+                    <a href="{{ url_for('mission.solve_puzzle',mission_id=puzzle.mission_id,puzzle_id=puzzle.id) }}">
+                        View →
+                    </a>
+                {% else %}
+
+                    <strong class="unsolved">
+                        🔒 UNSOLVED
+                    </strong>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+
+        <div class="empty-vault">
+            <h2>🧩 Vault Empty</h2>
+            <p>No puzzles have been added yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}
+Settings — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="settings-page">
+    <div class="settings-header">
+        <div>
+            <p class="settings-eyebrow">
+                PROJECT CIPHER / SYSTEM CONFIGURATION
+            </p>
+            <h1>
+                ⚙️ Settings
+            </h1>
+            <p>
+                Manage your agent profile and security credentials.
+            </p>
+        </div>
+
+        <div class="settings-status">
+            <span></span>
+            SYSTEM ONLINE
+        </div>
+    </div>
+
+    <div class="settings-grid">
+        <section class="settings-card">
+            <div class="card-heading">
+                <div class="card-icon">
+                    👤
+                </div>
+                <div>
+                    <span>
+                        IDENTITY
+                    </span>
+                    <h2>
+                        Profile Settings
+                    </h2>
+                </div>
+            </div>
+
+            <form method="POST">
+                <input type="hidden"
+                    name="action"
+                    value="profile">
+
+                <div class="form-group">
+                    <label>
+                        AGENT USERNAME
+                    </label>
+                    <input type="text"
+                        name="username"
+                        value="{{ current_user.username }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        EMAIL ADDRESS
+                    </label>
+                    <input type="email"
+                        name="email"
+                        value="{{ current_user.email }}"
+                        required>
+                </div>
+
+                <div class="account-info">
+                    <div>
+                        <span>RANK</span>
+                        <strong>
+                            {{ current_user.rank }}
+                        </strong>
+                    </div>
+                    <div>
+                        <span>LEVEL</span>
+                        <strong>
+                            {{ current_user.level }}
+                        </strong>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="save-btn">
+                    💾 Save Profile
+                </button>
+            </form>
+        </section>
+
+        <section class="settings-card">
+            <div class="card-heading">
+                <div class="card-icon">
+                    🔐
+                </div>
+                <div>
+                    <span>
+                        SECURITY
+                    </span>
+                    <h2>
+                        Change Password
+                    </h2>
+                </div>
+            </div>
+
+            <form method="POST">
+                <input type="hidden"
+                    name="action"
+                    value="password">
+                <div class="form-group">
+                    <label>
+                        CURRENT PASSWORD
+                    </label>
+                    <input type="password"
+                        name="current_password"
+                        placeholder="Enter current password"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        NEW PASSWORD
+                    </label>
+                    <input type="password"
+                        name="new_password"
+                        placeholder="Minimum 6 characters"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        CONFIRM NEW PASSWORD
+                    </label>
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Repeat new password"
+                        required>
+                </div>
+
+                <button type="submit"
+                    class="security-btn">
+                    🔒 Update Password
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <div class="security-notice">
+        <div class="notice-icon">
+            🛡️
+        </div>
+        <div>
+            <strong>
+                Your account is protected
+            </strong>
+            <p>
+                Never share your Project Cipher password
+                with another agent.
+            </p>
+        </div>
+    </div>
+
+    <div class="logout-section">
+        <div>
+            <span>
+                SESSION CONTROL
+            </span>
+            <h3>
+                End Current Session
+            </h3>
+            <p>
+                Sign out from this agent account.
+            </p>
+        </div>
+
+        <a href="{{ url_for('auth.logout') }}"
+            class="logout-btn">
+            🚪 Logout
+        </a>
+    </div>
+</div>
+
+{% endblock %}

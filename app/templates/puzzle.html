@@ -1,0 +1,486 @@
+{% extends "base.html" %}
+{% block title %}
+{{ puzzle.title }} — Project Cipher
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/puzzle.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="cipher-puzzle-page">
+    <div class="puzzle-topbar">
+        <div class="mission-breadcrumb">
+            <span class="system-dot"></span>
+            <span>PROJECT CIPHER</span>
+            <span class="separator">/</span>
+            <span>{{ mission.title }}</span>
+        </div>
+
+        <div class="live-status">
+            <span></span>
+            SECURE CONNECTION
+        </div>
+    </div>
+
+    <section class="puzzle-header">
+        <div class="puzzle-header-left">
+            <div class="classified-tag">
+                <span>◈</span>
+                CLASSIFIED CHALLENGE
+            </div>
+            <h1>
+                {{ puzzle.title }}
+            </h1>
+            <p>
+                Mission {{ "%02d"|format(mission.id) }}
+                <span>•</span>
+                Puzzle {{ "%02d"|format(puzzle.order) }}
+            </p>
+        </div>
+
+        <div class="puzzle-number-large">
+            <span>PUZZLE</span>
+            <strong>
+                {{ "%02d"|format(puzzle.order) }}
+            </strong>
+        </div>
+    </section>
+
+    <div class="puzzle-layout">
+        <main class="puzzle-main">
+            {% if puzzle.description %}
+            <section class="intel-card">
+                <div class="card-label">
+                    <span>◉</span>
+                    INTELLIGENCE BRIEF
+                </div>
+                <p>
+                    {{ puzzle.description }}
+                </p>
+            </section>
+            {% endif %}
+
+            <section class="challenge-card">
+                <div class="challenge-top">
+                    <div class="challenge-label">
+                        <span>🔐</span>
+                        ENCRYPTED CHALLENGE
+                    </div>
+                    <div class="challenge-code">
+                        CIPHER-{{ puzzle.id|string|upper }}
+                    </div>
+                </div>
+                <div class="challenge-line"></div>
+                <h2>
+                    {{ puzzle.question }}
+                </h2>
+                <div class="challenge-footer">
+                    <span>
+                        ◈ ANALYZE THE EVIDENCE
+                    </span>
+                    <span>
+                        ◈ SUBMIT YOUR ANSWER
+                    </span>
+                </div>
+            </section>
+
+            {% if puzzle.clue %}
+            <section class="clue-card">
+                <div class="clue-icon">
+                    💡
+                </div>
+                <div class="clue-content">
+                    <span>
+                        OPTIONAL INTELLIGENCE
+                    </span>
+                    <h3>
+                        Agent Hint
+                    </h3>
+                    <p>
+                        {{ puzzle.clue }}
+                    </p>
+                </div>
+            </section>
+            {% endif %}
+
+            {% if progress.completed %}
+            <section class="result-card success-card">
+                <div class="result-icon">
+                    ✓
+                </div>
+                <div>
+                    <span class="result-label">
+                        ACCESS GRANTED
+                    </span>
+                    <h2>
+                        Puzzle Solved
+                    </h2>
+                    <p>
+                        Excellent work, Agent.
+                        You successfully cracked this challenge.
+                    </p>
+                </div>
+            </section>
+
+            {% elif progress.attempts_remaining > 0 %}
+            <section class="answer-card">
+                <div class="answer-header">
+                    <div>
+                        <span>
+                            SECURE RESPONSE TERMINAL
+                        </span>
+                        <h2>
+                            Submit Your Answer
+                        </h2>
+                    </div>
+
+                    <div class="attempt-warning">
+                        {{ progress.attempts_remaining }}
+                        ATTEMPTS
+                    </div>
+                </div>
+
+                {% if progress %}
+                <div class="attempts-container">
+                    <div class="attempts-label">
+                        🎯 ATTEMPTS REMAINING
+                    </div>
+                    <div class="attempts-number">
+                        {{ progress.attempts_remaining }}
+                    </div>
+
+                    {% if progress.attempts_remaining == 3 %}
+                        <p>
+                            You have 3 attempts remaining.
+                        </p>
+                    {% elif progress.attempts_remaining == 2 %}
+                        <p>
+                            You have 2 attempts remaining.
+                        </p>
+                    {% elif progress.attempts_remaining == 1 %}
+                        <p class="last-attempt">
+                            ⚠️ Last attempt remaining!
+                        </p>
+                    {% else %}
+                        <p class="no-attempts">
+                            ❌ No attempts remaining.
+                        </p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <form method="POST"
+                    action="{{ url_for(
+                        'mission.solve_puzzle',
+                        mission_id=mission.id,
+                        puzzle_id=puzzle.id
+                    ) }}"
+                    class="answer-form">
+                    <label for="answer">
+                        ENTER DECRYPTED RESPONSE
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            ›
+                        </span>
+                        <input type="text"
+                            id="answer"
+                            name="answer"
+                            placeholder="Type your answer..."
+                            autocomplete="off"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="submit-answer-btn">
+                        <span>
+                            🔓
+                        </span>
+                        SUBMIT ANSWER
+                        <strong>
+                            →
+                        </strong>
+                    </button>
+                </form>
+
+                <div class="terminal-note">
+                    <span>●</span>
+                    Your response is being transmitted
+                    through a secure channel.
+                </div>
+            </section>
+
+            {% else %}
+            <section class="result-card failed-card">
+                <div class="result-icon">
+                    !
+                </div>
+                <div>
+                    <span class="result-label">
+                        ACCESS DENIED
+                    </span>
+                    <h2>
+                        Attempts Exhausted
+                    </h2>
+                    <p>
+                        You have used all available attempts
+                        for this challenge.
+                    </p>
+
+                    {% set retry_costs = [50, 75, 100, 150] %}
+                    {% if progress.retry_count < 4 %}
+                        {% set retry_cost =
+                            retry_costs[progress.retry_count]
+                        %}
+                    {% else %}
+                        {% set retry_cost = 150 %}
+                    {% endif %}
+
+                    <div class="retry-info">
+                        <p>
+                            🔥 Don't give up, Agent.
+                        </p>
+                        <p>
+                            Spend your earned XP to unlock
+                            <strong>
+                                3 additional attempts
+                            </strong>.
+                        </p>
+                        <p class="retry-cost">
+                            💎 Current Cost:
+                            <strong>
+                                {{ retry_cost }} XP
+                            </strong>
+                        </p>
+                    </div>
+
+                    {% if current_user.xp >= retry_cost %}
+                    <form method="POST"
+                        action="{{ url_for(
+                            'mission.buy_attempts',
+                            mission_id=mission.id,
+                            puzzle_id=puzzle.id
+                        ) }}">
+
+                        <button type="submit"
+                            class="retry-btn">
+                            🔓 BUY 3 ATTEMPTS —
+                            {{ retry_cost }} XP
+                        </button>
+                    </form>
+
+                    {% else %}
+                    <div class="not-enough-xp">
+                        ⚠️ Not enough XP
+                        <br>
+                        <small>
+                            You need
+                            {{ retry_cost }} XP
+                            to continue this investigation.
+                        </small>
+                    </div>
+
+                    {% if progress.attempts_remaining <= 0
+                          and not progress.completed %}
+                    <div class="free-reset-box">
+                        <div class="reset-icon">
+                            ⏱️
+                        </div>
+                        <div class="reset-content">
+                            <span class="reset-label">
+                                EMERGENCY RECOVERY
+                            </span>
+                            <h2>
+                                No Attempts Remaining
+                            </h2>
+                            <p>
+                                You don't have enough XP
+                                to purchase additional attempts.
+                            </p>
+
+                            {% if progress.reset_available_at %}
+                            <p class="reset-info">
+                                Wait 15 minutes to restore
+                                <strong>
+                                    3 attempts
+                                </strong>.
+                            </p>
+
+                            <div id="reset-countdown"
+                                class="reset-countdown"
+                                data-reset-time="{{ progress.reset_available_at.isoformat() }}Z">
+                                15:00
+                            </div>
+
+                            <button id="reset-btn"
+                                type="button"
+                                class="reset-btn"
+                                disabled>
+                                ⏳ WAITING FOR RESET
+                            </button>
+
+                            {% else %}
+
+                            <form method="POST"
+                                action="{{ url_for(
+                                    'puzzle.reset_attempts',
+                                    puzzle_id=puzzle.id
+                                ) }}">
+
+                                <button type="submit"
+                                    class="reset-btn">
+                                    ⏱️ START 15-MINUTE RESET
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </section>
+            {% endif %}
+        </main>
+
+        <aside class="puzzle-sidebar">
+            <div class="mission-stat-card">
+                <div class="stat-icon">
+                    ⭐
+                </div>
+                <div>
+                    <span>
+                        PUZZLE REWARD
+                    </span>
+                    <strong>
+                        +{{ puzzle.xp }} XP
+                    </strong>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <div class="progress-heading">
+                    <span>
+                        MISSION PROGRESS
+                    </span>
+                    <strong>
+                        {{ puzzle.order }}/{{ mission.puzzles|length }}
+                    </strong>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill"
+                        style="width:
+                        {{ (puzzle.order / mission.puzzles|length * 100)|round }}%;">
+                    </div>
+                </div>
+
+                <p>
+                    Keep solving to complete
+                    the investigation.
+                </p>
+            </div>
+
+            <div class="objective-card">
+                <div class="objective-icon">
+                    🕵️
+                </div>
+                <span>
+                    CURRENT OBJECTIVE
+                </span>
+                <h3>
+                    Crack the Evidence
+                </h3>
+                <p>
+                    Analyze the information carefully.
+                    Every clue may reveal the truth.
+                </p>
+            </div>
+
+            <a href="{{ url_for('mission.mission_detail', mission_id=mission.id) }}" class="back-mission-btn">
+                <span>
+                    ←
+                </span>
+                RETURN TO MISSION BRIEF
+            </a>
+        </aside>
+    </div>
+
+    <div class="cipher-footer">
+        <span>
+            PROJECT CIPHER
+        </span>
+        <span>
+            ◈
+        </span>
+        <span>
+            AGENT TERMINAL
+        </span>
+        <span>
+            ◈
+        </span>
+        <span>
+            SYSTEM SECURE
+        </span>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const countdown = document.getElementById("reset-countdown");
+
+    if (!countdown) {
+        return;
+    }
+
+    const resetTimeString = countdown.dataset.resetTime;
+    const resetTime = new Date(resetTimeString).getTime();
+    
+    let timer = null;
+
+    if (isNaN(resetTime)) {
+        console.error("Invalid reset time:", resetTimeString);
+        countdown.textContent = "ERROR";
+        return;
+    }
+    function updateCountdown() {
+        const now = Date.now();
+        const distance = resetTime - now;
+
+        if (distance <= 0) {
+            if (timer) {
+                clearInterval(timer);
+            }
+
+            countdown.textContent = "00:00";
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+
+            return;
+        }
+
+        const totalSeconds = Math.floor(distance / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        countdown.textContent =
+            String(minutes).padStart(2, "0")
+            + ":"
+            + String(seconds).padStart(2, "0");
+    }
+    updateCountdown();
+
+    timer = setInterval(function () {
+        updateCountdown();
+    }, 1000);
+
+});
+</script>
+
+{% endblock %}

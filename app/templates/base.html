@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %} Project Cipher{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+    {% block css %}
+    {% endblock %}
+</head>
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+
+                <button type="button"
+                    class="flash-close"
+                    onclick="this.parentElement.remove()"
+                    aria-label="Close message">
+                     ×
+                </button>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+{% set sidebar_pages = [
+    'dashboard.dashboard',
+    'mission.missions',
+    'dashboard.puzzle_vault',
+    'dashboard.achievements',
+    'dashboard.leaderboard',
+    'dashboard.profile',
+    'dashboard.settings',
+    'dashboard.settings',
+    'mission.mission_detail',
+    'mission.solve_puzzle',
+    'mission.next_puzzle'
+]%}
+{% set show_sidebar = request.endpoint in sidebar_pages %}
+
+{% if show_sidebar %}
+
+<header class="mobile-header">
+    <div class="mobile-logo">
+        PROJECT
+        <span>CIPHER</span>
+    </div>
+
+    <button type="button"
+        class="mobile-menu-btn"
+        id="mobileMenuBtn"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        onclick="openMobileMenu(); return false;">
+        ☰
+    </button>
+</header>
+
+<div class="sidebar-overplay"
+    id="sidebarOverplay"
+    onclick="closeMobileMenu()">
+</div>
+
+<aside class="agent-sidebar" id="agentSidebar">
+    <button type="button"
+        class="sidebar-close-btn"
+        id="sidebarCloseBtn"
+        aria-label="Close navigation"
+        onclick="closeMobileMenu(); return false;">
+        ×
+    </button>
+    
+    <div class="sidebar-logo">
+        <div class="logo-main">
+            PROJECT
+        </div>
+        <div class="logo-sub">
+            CIPHER
+        </div>
+        <div class="agent-status">
+            ● AGENT ONLINE
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="{{ url_for('main.index') }}"
+            class="sidebar-link">
+            <span class="sidebar-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        
+        <a href="{{ url_for('dashboard.dashboard') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+            <span class="sidebar-icon">📊</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('mission.missions') }}"
+           class="sidebar-link
+           {% if request.endpoint in [
+               'mission.missions',
+               'mission.mission_detail',
+               'mission.solve_puzzle'
+           ] %}
+               active
+           {% endif %}">
+            <span class="sidebar-icon">🗺️</span>
+            <span>Missions</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.puzzle_vault') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.puzzle_vault' %}active{% endif %}">
+            <span class="sidebar-icon">🧩</span>
+            <span>Puzzle Vault</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.achievements') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.achievements' %}active{% endif %}">
+            <span class="sidebar-icon">🏆</span>
+            <span>Achievements</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.leaderboard') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.leaderboard' %}active{% endif %}">
+            <span class="sidebar-icon">🏅</span>
+            <span>Leaderboard</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.profile') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.profile' %}active{% endif %}">
+            <span class="sidebar-icon">👤</span>
+            <span>Profile</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.settings') }}"
+           class="sidebar-link {% if request.endpoint == 'dashboard.settings' %}active{% endif %}">
+            <span class="sidebar-icon">⚙️</span>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <a href="{{ url_for('auth.logout') }}"
+           class="logout-link">
+            <span class="sidebar-icon">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+</aside>
+{% endif %}
+
+<main class="{% if show_sidebar %}agent-main{% endif %}">
+    {% block content %}
+    {% endblock %}
+</main>
+
+{% block js %}
+{% endblock %}
+
+{% if show_sidebar %}
+<script>
+
+function openMobileMenu() {
+    const sidebar = document.getElementById("agentSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const button = document.getElementById("mobileMenuBtn");
+
+    if (!sidebar) {
+        console.error(
+            "Project Cipher: Sidebar not found."
+        );
+        return;
+    }
+
+    sidebar.style.setProperty(
+        "transform",
+        "translateX(0)",
+        "important"
+    );
+
+    sidebar.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    if (overlay) {
+        overlay.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+
+        overlay.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        overlay.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+    }
+
+    document.body.classList.add( "sidebar-is-open");
+    document.body.style.overflow = "hidden";
+
+    if (button) {
+        button.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+}
+
+function closeMobileMenu() {
+    const sidebar = document.getElementById("agentSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const button = document.getElementById("mobileMenuBtn");
+
+    if (sidebar) {
+        sidebar.style.setProperty(
+            "transform",
+            "translateX(-100%)",
+            "important"
+        );
+        sidebar.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+    }
+
+    if (overlay) {
+        overlay.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
+        overlay.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+        overlay.style.setProperty(
+            "pointer-events",
+            "none",
+            "important"
+        );
+    }
+
+    document.body.classList.remove("sidebar-is-open");
+    document.body.style.overflow = "";
+
+    if (button) {
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        const sidebar =
+            document.getElementById(
+                "agentSidebar"
+            );
+
+        if (!sidebar) {
+            return;
+        }
+
+        const links =
+            sidebar.querySelectorAll(
+                ".sidebar-link, .logout-link"
+            );
+
+        links.forEach(
+            function (link) {
+                link.addEventListener(
+                    "click",
+                    function () {
+                        closeMobileMenu();
+                    }
+                );
+            }
+        );
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (event.key === "Escape") {
+            closeMobileMenu();
+        }
+    }
+);
+
+window.addEventListener(
+    "resize",
+    function () {
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    }
+);
+
+</script>
+{% endif %}
+
+</body>
+</html>

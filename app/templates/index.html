@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}
+Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}">
+{% endblock %}
+{% block content %}
+<div id="loader">
+    <h1>PROJECT CIPHER</h1>
+    <p>Initializing AI Engine...</p>
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+</div>
+
+<div id="main-content">
+    <nav class="navbar">
+        <div class="logo">
+            🛡 <span>PROJECT CIPHER</span>
+        </div>
+        <div class="nav-buttons">
+            <button class="login-btn" 
+                onclick="window.location.href='{{ url_for('auth.login')}}'">
+                Login 
+            </button>
+            <button class="register-btn"
+                onclick="window.location.href='{{ url_for('auth.register')}}'">
+                Register
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left">
+            <p class="agent-text">
+                WELCOME AGENT
+            </p>
+            <h1 id="typing-text"></h1>
+            <h2>
+                Every Choice Reveals A New Truth
+            </h2>
+            <p class="description">
+                The Cipher Organization has selected you for
+                the world's most dangerous investigation.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{{url_for('auth.register')}}" class="start-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <img src="{{ url_for('static', filename='images/agent.png') }}" alt="AI Agent">
+        </div>
+    </section>
+
+    <div class="particles">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div id="cursor-glow"></div>
+    <div class="rain"></div>
+    
+    <section class="stats">
+        <div class="stat-card">
+            <h2 id="players">0</h2>
+            <p>Agents</p>
+        </div>
+        <div class="stat-card">
+            <h2 id="missions">0</h2>
+            <p>Missions</p>
+        </div>
+        <div class="stat-card">
+            <h2 id="cases">0</h2>
+            <p>Cases Solved</p>
+        </div>
+        
+        <div class="stat-card">
+            <h2 id="countries">0</h2>
+            <p>Countries</p>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="feature-card reveal">
+            <div class="icon">🧠</div>
+            <h3>AI Detective</h3>
+            <p>
+                Intelligent hint system that guides you without revealing answers.
+            </p>
+        </div>
+        
+        <div class="feature-card reveal">
+            <div class="icon">🧩</div>
+            <h3>Unique Puzzles</h3>
+            <p>
+                Every mission contains different puzzles and mysteries.
+            </p>
+        </div>
+        <div class="feature-card reveal">
+            <div class="icon">🌍</div>
+            <h3>Global Missions</h3>
+            <p>Solve cases across different countries around the world.</p>
+        </div>
+        <div class="feature-card reveal">
+            <div class="icon">🏆</div>
+            <h3>Leaderboard</h3>
+            <p>Compete with detectives and climb the global rankings.</p>
+        </div>
+    </section>
+    
+    <section class="missions">
+        <h2 class="section-title">
+            Available Missions
+        </h2>
+        
+        <div class="mission-container">
+            <div class="mission-card reveal">
+                <img src="{{ url_for('static', filename='images/lab.jpg') }}">
+                <div class="mission-info">
+                    <h3>Secret Laboratory</h3>
+                </div>
+            </div>
+            
+            <div class="mission-card reveal">
+                <img src="{{ url_for('static', filename='images/bank.jpg') }}">
+                <div class="mission-info">
+                    <h3>Bank Heist</h3>
+                </div>
+            </div>
+            
+            <div class="mission-card reveal">
+                <img src="{{ url_for('static', filename='images/mansion.jpg') }}">
+                <div class="mission-info">
+                    <h3>Haunted Mansion</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <h2>PROJECT CIPHER</h2>
+            <p>Become the world's greatest detective.</p>
+            
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Missions</a>
+                <a href="#">Leaderboard</a>
+                <a href="#">About</a>
+            </div>
+            
+            <p class="copyright">
+                © 2026 Project Cipher. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+    
+    <button id="topBtn">
+        ↑
+    </button>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/loader.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

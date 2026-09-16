@@ -1,0 +1,109 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Edit Mission
+{% endblock %}
+{% block css %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / MISSIONS
+            </p>
+            <h1>
+                ✏️ Edit Mission
+            </h1>
+            <p class="admin-subtitle">
+                Update mission information.
+            </p>
+        </div>
+    </div>
+
+    <div class="admin-form-card">
+        <form method="POST" action="{{ url_for('admin.edit_mission', mission_id=mission.id) }}">
+            <div class="form-group">
+                <label>
+                    Mission Title
+                </label>
+                <input type="text"
+                    name="title"
+                    value="{{ mission.title }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Mission Description
+                </label>
+                <textarea name="description"
+                    rows="5"
+                    required>{{ mission.description }}
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Difficulty
+                </label>
+                <select name="difficulty">
+                    <option value="Easy"
+                        {% if mission.difficulty == "Easy" %}
+                        selected
+                        {% endif %}>
+                        🟢 Easy
+                    </option>
+
+                    <option value="Medium"
+                        {% if mission.difficulty == "Medium" %}
+                        selected
+                        {% endif %}>
+                        🟡 Medium
+                    </option>
+
+                    <option value="Hard"
+                        {% if mission.difficulty == "Hard" %}
+                        selected
+                        {% endif %}>
+                        🔴 Hard
+                    </option>
+
+                    <option value="Extreme"
+                        {% if mission.difficulty == "Extreme" %}
+                        selected
+                        {% endif %}>
+                        ☠️ Extreme
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Reward XP
+                </label>
+                <input type="number"
+                    name="reward_xp"
+                    value="{{ mission.reward_xp }}"
+                    min="0"
+                    required>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('admin.manage_missions') }}"
+                    class="cancel-btn">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                    class="save-btn">
+                    💾 Update Mission
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}
+Achievements — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/achievements.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="achievements-page">
+    <div class="achievement-header">
+        <div>
+            <p class="achievement-eyebrow">
+                PROJECT CIPHER / AGENT RECORD
+            </p>
+            <h1>
+                🏆 Achievements
+            </h1>
+            <p>
+                Every solved puzzle leaves a mark.
+                Every mission makes you stronger.
+            </p>
+        </div>
+
+        <div class="achievement-counter">
+            <strong>
+                {{ unlocked_count }}/{{ total_count }}
+            </strong>
+            <span>
+                ACHIEVEMENTS UNLOCKED
+            </span>
+        </div>
+    </div>
+
+    <div class="achievement-progress">
+        <div class="progress-info">
+            <span>AGENT PROGRESS</span>
+            <strong>
+                {{ ((unlocked_count / total_count) * 100)|round|int }}%
+            </strong>
+        </div>
+
+        <div class="progress-bar">
+            <div
+                class="progress-fill"
+                style="width: {{ (unlocked_count / total_count) * 100 }}%;">
+            </div>
+        </div>
+    </div>
+
+    <div class="achievement-grid">
+        {% for achievement in achievements %}
+        <div class="achievement-card
+            {% if achievement.unlocked %}
+                unlocked
+            {% else %}
+                locked
+            {% endif %}">
+            <div class="achievement-icon">
+                {% if achievement.unlocked %}
+                    {{ achievement.icon }}
+                {% else %}
+                    🔒
+                {% endif %}
+            </div>
+
+            <div class="achievement-info">
+                <div class="achievement-status">
+                    {% if achievement.unlocked %}
+                        <span class="status-unlocked">
+                            ✓ UNLOCKED
+                        </span>
+                    {% else %}
+                        <span class="status-locked">
+                            🔒 LOCKED
+                        </span>
+                    {% endif %}
+                </div>
+                <h2>
+                    {{ achievement.title }}
+                </h2>
+                <p>
+                    {{ achievement.description }}
+                </p>
+                <small>
+                    {{ achievement.requirement }}
+                </small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

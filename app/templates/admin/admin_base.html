@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Control Center{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    {% block css %}{% endblock %}
+</head>
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% if current_user.is_authenticated and current_user.is_admin %}
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <div class="admin-logo-icon">
+                ⚡
+            </div>
+
+            <div>
+                <h2>
+                    CIPHER
+                </h2>
+
+                <span>
+                    ADMIN
+                </span>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin.dashboard') }}"
+                class="active">
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_missions')}}">
+                🗺️
+                <span>Missions</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_puzzles')}}">
+                🧩
+                <span>Puzzles</span>
+            </a>
+
+            <a href="{{ url_for('admin.manage_agents')}}">
+                👥
+                <span>Agents</span>
+            </a>
+
+            <a href="{{ url_for('admin.leaderboard')}}">
+                🏆
+                <span>Leaderboard</span>
+            </a>
+
+            <a href="{{ url_for('admin.analytics')}}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('admin.settings')}}">
+                ⚙️
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-bottom">
+            <a href="{{ url_for('auth.logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
+
+{% else %}
+    <div class="admin-access-denied">
+        <h2>Access Denied</h2>
+        <p>
+            Administrator privileges are required.
+        </p>
+    </div>
+{% endif %}
+
+{% block js %}{% endblock %}
+
+</body>
+</html>

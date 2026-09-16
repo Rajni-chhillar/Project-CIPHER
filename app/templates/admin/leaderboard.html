@@ -1,0 +1,169 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}
+Leaderboard — Project Cipher
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="admin-page">
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-eyebrow">
+                PROJECT CIPHER / RANKING SYSTEM
+            </p>
+            <h1>
+                🏆 Agent Leaderboard
+            </h1>
+            <p>
+                Track the highest performing agents.
+            </p>
+        </div>
+
+        <div class="online-status">
+            <span></span>
+            SYSTEM ONLINE
+        </div>
+    </div>
+
+    {% if agents %}
+    <div class="top-agents">
+        {% for agent in agents[:3] %}
+        <div class="top-agent-card">
+            <div class="rank-number">
+                {% if loop.index == 1 %}
+                    🥇
+                {% elif loop.index == 2 %}
+                    🥈
+                {% else %}
+                    🥉
+                {% endif %}
+            </div>
+
+            <div class="leader-avatar">
+                🕵️
+            </div>
+            <h2>
+                {{ agent.username }}
+            </h2>
+            <p>
+                {{ agent.rank }}
+            </p>
+            <strong>
+                {{ agent.xp }} XP
+            </strong>
+            <span>
+                Level {{ agent.level }}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="agents-card leaderboard-card">
+        <div class="agents-header">
+            <div>
+                <span>
+                    AGENT RANKINGS
+                </span>
+                <h2>
+                    All Agents
+                </h2>
+            </div>
+            <div class="agent-count">
+                {{ agents|length }} Agents
+            </div>
+        </div>
+        <div class="agents-table-wrapper">
+            <table class="agents-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Agent</th>
+                        <th>Level</th>
+                        <th>XP</th>
+                        <th>Missions</th>
+                        <th>Badges</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agent in agents %}
+                    <tr>
+                        <td>
+                            <strong class="ranking-position">
+                                #{{ loop.index }}
+                            </strong>
+                        </td>
+                        <td>
+                            <div class="agent-name">
+                                <div class="agent-avatar">
+                                    🕵️
+                                </div>
+                                <div>
+                                    <strong>
+                                        {{ agent.username }}
+                                    </strong>
+                                    <small>
+                                        Agent #{{ agent.id }}
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="level-badge">
+                                LVL {{ agent.level }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>
+                                {{ agent.xp }} XP
+                            </strong>
+                        </td>
+                        <td>
+                            {{ agent.missions_completed }}
+                        </td>
+                        <td>
+                            🏆 {{ agent.badges }}
+                        </td>
+                        <td>
+                            {% if agent.level >= 5 %}
+                                <span class="status-elite">
+                                    ELITE
+                                </span>
+                            {% elif agent.level >= 3 %}
+                                <span class="status-active">
+                                    ACTIVE
+                                </span>
+                            {% else %}
+                                <span class="status-training">
+                                    TRAINING
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+
+    <div class="agents-card">
+        <div class="empty-activity">
+            <div>
+                🏆
+            </div>
+            <h3>
+                No Agents Yet
+            </h3>
+            <p>
+                Agent rankings will appear here
+                once users register.
+            </p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
